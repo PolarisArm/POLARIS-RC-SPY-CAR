@@ -1,0 +1,263 @@
+<html>
+  <head>
+    <title>POLARIS RC SPY CAR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      body {        
+      font-family: Arial;
+      text-align: center;
+      margin: 0px auto;
+      padding-top: 30px;
+      min-height: 100vh;
+      }
+     
+      table{ 
+        margin-left: auto; 
+        margin-right: auto;         
+        margin-top: 1rem;
+        }
+
+      td{ 
+        padding: 8 px; 
+        }
+      .button {
+        background-color: #0b0e5f;
+        width: 120px;
+        height: 50px;
+        border: none;
+        border-radius: 20px;
+        color: #6cc6a5ed;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 18px;
+        margin: 6px 3px;
+        cursor: pointer;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+
+      }
+      .button:hover{
+        cursor: pointer;
+        box-shadow:  0px 0px 10px rgb(21 147 140 / 66%);
+        width: 125px;
+        height: 55;
+        background-color: #124585;
+      }
+      #LIGHT{
+        background-color: #0b0e5f;
+      }
+      #HORN
+      {
+        background-color: #0b0e5f;
+      }
+   
+
+      .Canvas{
+        width: auto;
+        max-width: 100%;
+        height: auto;
+        border: 1px solid rgb(210, 145, 6);
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas" class="Canvas" width="640" height="480"></canvas>
+    <table>
+          <tr>
+             <td colspan="6" width="100%" align="center">
+                <button class="button" id="capture">CAPTURE</button>
+              </td>
+          </tr>
+          </tr>
+            <tr>
+            <td colspan="2" width="25%"" align="left">
+              <button class="button" id="LIGHT" value="0">LIGHTOFF</button>
+            </td>
+            <td colspan="2">
+            </td>
+            <td colspan="2" width="25%" align="right">
+              <button class="button" id="HORN" value="0">HORNOFF</button>
+            </td>
+          </tr>
+        
+    </table>
+    <script>
+    document.addEventListener("DOMContentLoaded",function(event){
+              
+               var baseHost = document.location.origin;
+              var streamUrl = baseHost + ":81";
+               const WS_URL = "ws://" + window.location.host + ":82";
+       
+                const websocket = new WebSocket(WS_URL);
+                const Capture = document.getElementById("capture");
+                const LED = document.getElementById("LIGHT");
+                const HORN = document.getElementById("HORN");
+                const speedSlider = document.getElementById("speedSlider");
+                const sliderValue = document.getElementById("sliderValue");
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+              
+                var image = new Image();
+                var battery = 0.00;
+                var direction = 'A';
+
+                websocket.onopen    = onOpen;
+                websocket.onclose   = onClose;
+                websocket.onmessage = onMessage; // <-- add this line
+
+
+                function onOpen(event) {
+                console.log(`Connected to ${WS_URL}`);
+                  websocket.send("Stop");
+                }
+
+                function onClose(event) {
+                  console.log('Connection closed');
+                  setTimeout(initWebSocket, 2000);
+                }
+
+                function onMessage(event) {
+                if (typeof event.data === "string"){
+                      if (event.data.startsWith("DIR:")) {
+                        const value = event.data.substring(5);
+                        direction = value;
+                     }
+
+                     if (event.data.startsWith("BAT:")) {
+                        const value = event.data.substring(5);
+                        battery = value;
+                     }
+                    }
+
+                if (event.data instanceof Blob) {
+                      var urlObject = URL.createObjectURL(event.data);
+                      image.src = urlObject;
+                    }
+                }
+                
+                // Function to draw a rectangle
+                function drawRectangle(x, y, width, height, color) {
+                    ctx.beginPath();                    
+                    ctx.lineWidth = "3";
+                    ctx.strokeStyle = "#d4fa7a";
+                    ctx.rect(x, y, width, height);
+                    ctx.stroke();
+                }
+
+
+                // Function to draw text
+                function drawText(text, x, y, fontSize, fontColor) {
+                    ctx.font = fontSize + "px Arial";
+                    ctx.fillStyle = fontColor;
+                    ctx.fillText(text, x, y);
+                }
+
+                image.onload = function() {
+                      c.width = image.width;
+                      c.height = image.height;
+                      ctx.clearRect(0, 0, c.width, c.height);
+
+                      ctx.drawImage(image, 0, 0);
+                      drawRectangle(10,10,620,460,"green")
+                      
+                      var  color = "yellow";
+                      if(battery <= 5)
+                      {
+                        color = "red";
+                      }
+                      else{
+                        color = "yellow";
+                      }
+                      // Draw text
+                      drawText("BATTERY: ",15,50,16,color)
+                      drawText(battery, 120, 50,16, color);
+                }
+
+
+
+
+                Capture.onclick = () => {
+                    if (image.src) {
+                        const now = new Date();
+                        const dateStr = now.toLocaleDateString().replaceAll("/", "-");
+                        const timeStr = now.toLocaleTimeString().replaceAll(":", "-");
+                        const filename = `captured_image_${dateStr}_${timeStr}.jpg`;
+
+                        const link = document.createElement("a");
+                        link.href = image.src;
+                        link.download = filename;
+                        link.click();
+
+                        playCaptureSound();
+                    }
+                };
+
+
+                LED.onclick = () =>
+                {
+                  LED.style.backgroundColor = "#512B81";
+                  if(LED.value == 1)
+                  {
+                    LED.innerHTML = "LIGHTON";
+                    LED.value     = "0";
+                    websocket.send("LIGHTOFF");                   
+                    console.log("LIGHTOFF");
+                  }
+                  else if(LED.value == 0)
+                  {
+                    LED.innerHTML = "LIGHTOFF";
+                    LED.value     = "1";
+                    websocket.send("LIGHTON");
+                  }
+                }
+
+                HORN.onclick = () =>
+                {
+                    HORN.style.backgroundColor = "#512B81";
+                  if(HORN.value == 1)
+                  {
+                    HORN.innerHTML = "HORNON";
+                    HORN.value     = "0";
+                    websocket.send("HOFF");                   
+                  }
+                  else if(HORN.value == 0)
+                  {
+                    HORN.innerHTML = "HORNOFF";
+                    HORN.value     = "1";
+                    websocket.send("HON");
+                  }
+                }
+
+             function playCaptureSound() {
+                // Create an AudioContext object
+                const audioCtx = new AudioContext();
+
+                // Create a gain node to control the volume
+                const gainNode = audioCtx.createGain();
+                gainNode.gain.value = 0.5;
+
+                // Create an oscillator node to generate the sound
+                const oscillator = audioCtx.createOscillator();
+                oscillator.type = "sine";
+                oscillator.frequency.value = 880;
+
+                // Connect the nodes
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                // Start and stop the sound after a short delay
+                oscillator.start();
+                gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.2);
+                oscillator.stop(audioCtx.currentTime + 0.3);
+                }
+                }); 
+        </script>
+  </body>
+</html>
