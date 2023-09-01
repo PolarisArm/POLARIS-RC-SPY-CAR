@@ -20,8 +20,7 @@ HardwareSerial espSerial(1);
 String receivedData = ""; // To store the received characters
 
 
-// const char* ssid = "Home";
-// const char* password = "13227296";
+
 const char* ssid = "POLARIS_RC_SPY_CAR";
 const char* password = "TLS1985OP";
 char direction   = 'X';
