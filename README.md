@@ -7,19 +7,19 @@ ________________________________________________________________________________
 
 ## INTRODUCTION
 
-__POLARIS RC SPY CAR__ is a personal fun project based on __ROBODUINO CARRIER BOARD for Arduino nano (ATMEGA328PB)__<br>
-I made this with __ROBODUINO CARRIER BOARD__ beacuse every time I try to build 4WD robot there will be pin shortage <br>
-say PWM pin for Servo or SPI pin or some pin for other function. Roboduino carrier board does not create such problem.It<br>
-communicates with arduino nano with just two pin namely via I2C communication pin, so most of the arduino pin is available for <br>
-other use.
+__POLARIS RC SPY CAR__ is ahobby project centered on __ROBODUINO CARRIER BOARD for Arduino nano (ATMEGA328PB)__<br>
+I built this with __ROBODUINO CARRIER BOARD__ beacause every time I try to build 4WD robot there will be pin shortage <br>
+like PWM pin for Servo or SPI pin or some pin for other purpose. Roboduino carrier board does not cause such a problema.It<br>
+communicates with arduino nano utilizing only two pin namely I2C communication pin, leaving majority of the arduino pins free for <br>
+other purpose.
 
-# Feature of this car
+## Feature of this car
 * 4WD WHEEL CONTROL
 * Have onboard esp32cam with external antenna
 * Camera can rotate X and Y axis
 * Better range due to use of nrf24l01
 
-#Feature of ROBODUINO CARRIER BOARD
+## Feature of ROBODUINO CARRIER BOARD
 * Can control maximum 4 dc motor or 2X stepper motor(support is still in devolapment)
 * 6X servo pin
 * ESP-01 adapter for onboard wifi
