@@ -36,7 +36,6 @@ float BAT_VALUE     = 0;
 int R1              = 10000;
 int R2              = 6800;
 int SPEED           = 0;
-int MIN_SPEED       = 20;
 
 int FB,LR,CAM_LR,CAM_UD,POT1,POT2 = 0;
 int motor_speed = 0;
