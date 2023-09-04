@@ -36,6 +36,7 @@ float BAT_VALUE     = 0;
 int R1              = 10000;
 int R2              = 6800;
 int SPEED           = 0;
+int MIN_SPEED       = 20;
 
 int FB,LR,CAM_LR,CAM_UD,POT1,POT2 = 0;
 int motor_speed = 0;
@@ -96,7 +97,7 @@ void loop()
   
   unsigned long now = millis();
 
-  if(now - lastRecivedTime > 1000){resetData();} // IF NOT IT WILL JUST RUN OR FLY AWAY
+  if(now - lastRecivedTime > 150){resetData();} // IF NOT IT WILL JUST RUN OR FLY AWAY
 
  //print_reciver_channel();
   espSerial.print(BAT_VALUE);
@@ -173,17 +174,17 @@ void backward(int motor_speed)
 void left(int motor_speed)
 {
     motor.run(MOTOR1,FORWARD,motor_speed);
-    motor.run(MOTOR2,BACKWARD,motor_speed/2);
+    motor.run(MOTOR2,BACKWARD,motor_speed/1.4);
     motor.run(MOTOR3,FORWARD,motor_speed);
-    motor.run(MOTOR4,BACKWARD,motor_speed/2); 
+    motor.run(MOTOR4,BACKWARD,motor_speed/1.4); 
    
 }
 
 void right(int motor_speed)
 {
-    motor.run(MOTOR1,BACKWARD,motor_speed/2);
+    motor.run(MOTOR1,BACKWARD,motor_speed/1.4);
     motor.run(MOTOR2,FORWARD,motor_speed);
-    motor.run(MOTOR3,BACKWARD,motor_speed/2);
+    motor.run(MOTOR3,BACKWARD,motor_speed/1.4);
     motor.run(MOTOR4,FORWARD,motor_speed);
 }
 
