@@ -22,7 +22,7 @@ String receivedData = ""; // To store the received characters
 
 
 const char* ssid = "POLARIS_RC_SPY_CAR";
-const char* password = "TLS1985OP";
+const char* password = "tls1985op";
 char direction   = 'X';
 float battery    =  0;
 
@@ -85,15 +85,15 @@ void setup() {
   config.pin_sscb_scl = SIOC_GPIO_NUM;
   config.pin_pwdn = PWDN_GPIO_NUM;
   config.pin_reset = RESET_GPIO_NUM;
-  config.xclk_freq_hz = 20000000;
+  config.xclk_freq_hz = 10000000;
   config.pixel_format = PIXFORMAT_JPEG;
   //init with high specs to pre-allocate larger buffers
   if (psramFound()) {
-    config.frame_size = FRAMESIZE_VGA;
+    config.frame_size = FRAMESIZE_CIF;
     config.jpeg_quality = 10;
     config.fb_count = 2;
   } else {
-    config.frame_size = FRAMESIZE_SVGA;
+    config.frame_size = FRAMESIZE_CIF;
     config.jpeg_quality = 12;
     config.fb_count = 1;
   }
@@ -109,7 +109,7 @@ void setup() {
 
 
   sensor_t * s = esp_camera_sensor_get();
-  s->set_framesize(s, FRAMESIZE_VGA);
+  s->set_framesize(s, FRAMESIZE_CIF);
 
 
   // WiFi.begin(ssid, password);
@@ -210,7 +210,3 @@ void handle_message(WebsocketsClient &client, WebsocketsMessage msg)
   }
   
 }
-
-
-
-
