@@ -26,8 +26,10 @@ other purpose.
 * HC-05 & HC-06 bluetooth module for bluetooth support
 * I2C header for onboard sensor
 * Extra I2C header for external sensor or other module
+  
 # POLARIS RC SPY CAR MAIN BOARD VIEW
-![POLARIS_RC_CAR_MAIN_BOARD](https://github.com/PolarisArm/POLARIS-RC-SPY-CAR/assets/143507006/5d4a7bd9-1cbc-4869-acda-720d7806103e)
+
+![POLARIS_RC_CAR_MAIN_BOARD](https://github.com/PolarisArm/POLARIS-RC-SPY-CAR/assets/143507006/dfb86663-4ccd-4a9b-a809-4096db497acc)
 
 # This is for today.Bye
 
