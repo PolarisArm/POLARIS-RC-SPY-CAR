@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
       body {        
-      font-family: Arial;
+      font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
       text-align: center;
       margin: 0px auto;
       padding-top: 30px;
@@ -60,15 +60,17 @@
    
 
       .Canvas{
-        width: auto;
-        max-width: 100%;
-        height: auto;
-        border: 1px solid rgb(210, 145, 6);
+        min-width: 400px;
+        max-width: 400px;
+        min-height: 296px;
+        max-height: 296px;
+        border: 2px solid rgb(210, 78, 6);
+        border-radius: 10px;
       }
     </style>
   </head>
   <body>
-    <canvas id="myCanvas" class="Canvas" width="640" height="480"></canvas>
+    <canvas id="myCanvas" class="Canvas"></canvas>
     <table>
           <tr>
              <td colspan="6" width="100%" align="center">
@@ -165,7 +167,7 @@
                       ctx.clearRect(0, 0, c.width, c.height);
 
                       ctx.drawImage(image, 0, 0);
-                      drawRectangle(10,10,620,460,"green")
+                      drawRectangle(10,10,380,276,"green")
                       
                       var  color = "yellow";
                       if(battery <= 5)
@@ -176,8 +178,11 @@
                         color = "yellow";
                       }
                       // Draw text
-                      drawText("BATTERY: ",15,50,16,color)
-                      drawText(battery, 120, 50,16, color);
+                      drawText("BATTERY: ",15,50,14,color);
+
+                      drawText(battery, 80, 50,14, color);
+                      drawText("POLARIS RC SPY CAR",180,50,14,"#0db8fc");
+
                 }
 
 
